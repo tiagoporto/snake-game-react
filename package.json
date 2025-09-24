@@ -11,7 +11,7 @@
     "checks": "pnpm format:check && pnpm lint",
     "format:check": "prettier --check --ignore-unknown \"**/*\"",
     "format": "npm run format:check -- --write",
-    "lint": "eslint ."
+    "lint": "eslint --max-warnings 0"
   },
   "dependencies": {
     "react": "^19.1.1",
