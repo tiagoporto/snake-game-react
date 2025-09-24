@@ -7,8 +7,11 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "checks": "pnpm format:check && pnpm lint",
+    "format:check": "prettier --check --ignore-unknown \"**/*\"",
+    "format": "npm run format:check -- --write",
+    "lint": "eslint ."
   },
   "dependencies": {
     "react": "^19.1.1",
@@ -16,6 +19,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@tiagoporto/prettier-config": "^2.1.0",
     "@types/react": "^19.1.13",
     "@types/react-dom": "latest",
     "@vitejs/plugin-react": "^5.0.3",
