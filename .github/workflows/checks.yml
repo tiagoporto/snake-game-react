@@ -1,0 +1,51 @@
+name: Checks
+
+on:
+  workflow_call:
+  push:
+    branches: [main]
+  pull_request:
+    types:
+      - opened # PR was open
+      - synchronize # PR was updated
+      - reopened # PR was closed and is now open again
+      - ready_for_review # PR was converted from draft to open
+      - converted_to_draft # PR was converted from open to draft
+
+concurrency:
+  group: checks_${{ github.workflow }}_${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Formatting Check
+        run: pnpm formatting:check
+
+      - name: Lint
+        if: success() || failure()
+        run: pnpm lint
+
+      - name: Build Site
+        if: success() || failure()
+        run: pnpm build
