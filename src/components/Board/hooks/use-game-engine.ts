@@ -20,7 +20,7 @@ export const useGameEngine = (
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
   const [direction, setDirection] = useState<Direction>('RIGHT')
   const [snakePosition, setSnakePosition] = useState(SNAKE_INITIAL_POSITION)
-  const [foodPosition, setFoodPosition] = useState(createFood())
+  const [foodPosition, setFoodPosition] = useState(createFood(snakePosition))
   const [shouldGrowth, setShouldGrowth] = useState(false)
   const { score, setScore } = use(ScoreContext)
 
@@ -57,7 +57,7 @@ export const useGameEngine = (
   // Handle food
   useEffect(() => {
     if (JSON.stringify(snakePosition[0]) === JSON.stringify(foodPosition)) {
-      setFoodPosition(() => createFood())
+      setFoodPosition(() => createFood(snakePosition))
       setShouldGrowth(true)
       setScore((prevState: number) => prevState + POINTS_PER_FOOD)
     }
