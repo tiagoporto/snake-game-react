@@ -7,6 +7,9 @@ import {
   SNAKE_COLOR,
   FOOD_COLOR,
 } from '../const'
+import type { Direction } from '../utils'
+import { clearBoard, moveSnake } from '../utils'
+import { useHandleKeys } from './use-handle-keys'
 
 const foodInitialPosition = {
   x: Math.floor((Math.random() * BOARD_SIZE) / CELL_SIZE) * CELL_SIZE,
@@ -19,16 +22,22 @@ export const useGameEngine = (
   canvasRef: RefObject<HTMLCanvasElement | null>,
 ) => {
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
+  const [direction, setDirection] = useState<Direction>('RIGHT')
+  const [snakePosition, setSnakePosition] = useState(SNAKE_INITIAL_POSITION)
+  useHandleKeys(moveSnake, snakePosition, setSnakePosition, setDirection)
 
   useEffect(() => {
     if (canvasRef.current === null) {
       throw new Error('no canvas in screen')
     }
     setContext(canvasRef.current.getContext('2d'))
+    let animationFrameId: number
 
     if (context) {
+      clearBoard(context)
+
       // Render initial snake position
-      SNAKE_INITIAL_POSITION.forEach((position) => {
+      snakePosition.forEach((position) => {
         context.fillStyle = SNAKE_COLOR
         context?.fillRect(position.x, position.y, CELL_SIZE, CELL_SIZE)
       })
@@ -42,7 +51,20 @@ export const useGameEngine = (
         CELL_SIZE,
       )
     }
-  }, [canvasRef, context])
+
+    const render = () => {
+      if (context && animationFrameId % 10 === 0) {
+        moveSnake(direction, snakePosition, setSnakePosition, setDirection)
+      }
+      animationFrameId = window.requestAnimationFrame(render)
+    }
+
+    render()
+
+    return () => {
+      window.cancelAnimationFrame(animationFrameId)
+    }
+  }, [canvasRef, context, snakePosition, direction, setDirection])
 
   return {}
 }
