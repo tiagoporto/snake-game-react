@@ -40,3 +40,7 @@ pnpm install
 ```bash
 pnpm start
 ```
+
+## 📋 Project Board
+
+[Snake game](https://github.com/users/tiagoporto/projects/12)
