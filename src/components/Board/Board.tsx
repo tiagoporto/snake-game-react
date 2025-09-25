@@ -1,5 +1,5 @@
 import { use, useEffect, useRef } from 'react'
-import { useHandleKeys } from './hooks/handleKeys'
+import { useHandleKeys } from './hooks/use-handle-keys'
 import { ScoreContext } from '../Score/context/score'
 import { BOARD_SIZE } from './const'
 
