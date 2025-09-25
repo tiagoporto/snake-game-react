@@ -1,15 +1,22 @@
-import { BOARD_SIZE, CELL_SIZE, SNAKE_INITIAL_POSITION } from '../const'
+import type { ELEMENTS_ARRAY } from '../const'
+import { BOARD_SIZE, CELL_SIZE } from '../const'
 
 export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT'
-export const moveSnake = (
-  direction: Direction,
-  currentPosition: typeof SNAKE_INITIAL_POSITION,
-  setPosition: (position: typeof SNAKE_INITIAL_POSITION) => void,
-  setDirection: (direction: Direction) => void,
-) => {
-  let newPosition = currentPosition.filter(
-    (_, i) => i !== currentPosition.length - 1,
-  )
+
+export interface MoveSnakeParams {
+  direction: Direction
+  currentPosition: ELEMENTS_ARRAY
+  shouldGrowth: boolean
+}
+
+export const moveSnake = ({
+  direction,
+  currentPosition,
+  shouldGrowth,
+}: MoveSnakeParams) => {
+  let newPosition = shouldGrowth
+    ? currentPosition
+    : currentPosition.filter((_, i) => i !== currentPosition.length - 1)
 
   switch (direction) {
     case 'UP':
@@ -58,6 +65,5 @@ export const moveSnake = (
       break
   }
 
-  setPosition(newPosition)
-  setDirection(direction)
+  return newPosition
 }

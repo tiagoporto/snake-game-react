@@ -1,33 +1,32 @@
-import { moveSnake } from '../utils'
+import type { Direction } from '../utils'
+import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useEffect } from 'react'
 
 export const useHandleKeys = (
-  callback: typeof moveSnake,
-  currentPosition: Parameters<typeof moveSnake>[1],
-  setSnakePosition: Parameters<typeof moveSnake>[2],
-  setDirection: Parameters<typeof moveSnake>[3],
+  setDirection: Dispatch<SetStateAction<Direction>>,
 ) => {
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       switch (event.key) {
         case 'ArrowUp':
-          callback('UP', currentPosition, setSnakePosition, setDirection)
+          setDirection('UP')
+
           break
         case 'ArrowDown':
-          callback('DOWN', currentPosition, setSnakePosition, setDirection)
+          setDirection('DOWN')
 
           break
         case 'ArrowRight':
-          callback('RIGHT', currentPosition, setSnakePosition, setDirection)
+          setDirection('RIGHT')
           break
         case 'ArrowLeft':
-          callback('LEFT', currentPosition, setSnakePosition, setDirection)
+          setDirection('LEFT')
           break
         default:
           break
       }
     },
-    [currentPosition, setSnakePosition, setDirection, callback],
+    [setDirection],
   )
 
   useEffect(() => {

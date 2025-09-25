@@ -21,9 +21,10 @@ export const useGameEngine = (
   const [direction, setDirection] = useState<Direction>('RIGHT')
   const [snakePosition, setSnakePosition] = useState(SNAKE_INITIAL_POSITION)
   const [foodPosition, setFoodPosition] = useState(createFood())
+  const [shouldGrowth, setShouldGrowth] = useState(false)
   const { score, setScore } = use(ScoreContext)
 
-  useHandleKeys(moveSnake, snakePosition, setSnakePosition, setDirection)
+  useHandleKeys(setDirection)
 
   const resetGame = useCallback(() => {
     setScore(0)
@@ -49,6 +50,7 @@ export const useGameEngine = (
   useEffect(() => {
     if (JSON.stringify(snakePosition[0]) === JSON.stringify(foodPosition)) {
       setFoodPosition(() => createFood())
+      setShouldGrowth(true)
       setScore((prevState: number) => prevState + POINTS_PER_FOOD)
     }
   }, [snakePosition, foodPosition, setScore])
@@ -69,7 +71,14 @@ export const useGameEngine = (
 
     const render = () => {
       if (context && animationFrameId % FRAMES_TO_RERENDER === 0) {
-        moveSnake(direction, snakePosition, setSnakePosition, setDirection)
+        const snake = moveSnake({
+          direction,
+          currentPosition: snakePosition,
+          shouldGrowth,
+        })
+
+        setSnakePosition(snake || [])
+        setShouldGrowth(false)
       }
       animationFrameId = window.requestAnimationFrame(render)
     }
@@ -79,5 +88,13 @@ export const useGameEngine = (
     return () => {
       window.cancelAnimationFrame(animationFrameId)
     }
-  }, [canvasRef, context, snakePosition, direction, setDirection, foodPosition])
+  }, [
+    canvasRef,
+    context,
+    snakePosition,
+    direction,
+    setDirection,
+    foodPosition,
+    shouldGrowth,
+  ])
 }
