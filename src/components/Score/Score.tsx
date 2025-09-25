@@ -6,7 +6,9 @@ export const Score = () => {
 
   return (
     <div>
-      <h2>Score: {score}</h2>
+      <h2>
+        Score: <span className="font-bold">{score}</span>
+      </h2>
     </div>
   )
 }

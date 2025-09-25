@@ -1,4 +1,3 @@
-import type { RefObject } from 'react'
 import { use, useCallback, useEffect, useState } from 'react'
 import {
   BOARD_SIZE,
@@ -14,24 +13,20 @@ import { clearBoard, moveSnake, createFood, renderElements } from '../utils'
 import { useHandleKeys } from './use-handle-keys'
 import { ScoreContext } from '../context/score'
 
-export const useGameEngine = (
-  canvasRef: RefObject<HTMLCanvasElement | null>,
-) => {
-  const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
+export const useGameEngine = (context: CanvasRenderingContext2D | null) => {
   const [direction, setDirection] = useState<Direction>('RIGHT')
   const [snakePosition, setSnakePosition] = useState(SNAKE_INITIAL_POSITION)
   const [foodPosition, setFoodPosition] = useState(createFood(snakePosition))
   const [shouldGrowth, setShouldGrowth] = useState(false)
   const { score, setScore } = use(ScoreContext)
-
-  useHandleKeys(direction, setDirection)
-
   const resetGame = useCallback(() => {
     setScore(0)
     setSnakePosition(SNAKE_INITIAL_POSITION)
     setDirection('RIGHT')
     alert('Game Over')
   }, [setScore, setSnakePosition, setDirection])
+
+  useHandleKeys(direction, setDirection)
 
   // handle game over
   useEffect(() => {
@@ -65,10 +60,6 @@ export const useGameEngine = (
 
   // Render process
   useEffect(() => {
-    if (canvasRef.current === null) {
-      throw new Error('no canvas in screen')
-    }
-    setContext(canvasRef.current.getContext('2d'))
     let animationFrameId: number
 
     if (context) {
@@ -88,6 +79,7 @@ export const useGameEngine = (
         setSnakePosition(snake || [])
         setShouldGrowth(false)
       }
+
       animationFrameId = window.requestAnimationFrame(render)
     }
 
@@ -97,7 +89,6 @@ export const useGameEngine = (
       window.cancelAnimationFrame(animationFrameId)
     }
   }, [
-    canvasRef,
     context,
     snakePosition,
     direction,
