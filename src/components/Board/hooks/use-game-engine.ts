@@ -44,6 +44,14 @@ export const useGameEngine = (
     ) {
       resetGame()
     }
+
+    snakePosition.forEach((segment, index) => {
+      if (index > 0) {
+        if (JSON.stringify(segment) === JSON.stringify(snakePosition[0])) {
+          resetGame()
+        }
+      }
+    })
   }, [score, snakePosition, resetGame])
 
   // Handle food
