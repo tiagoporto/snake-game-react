@@ -1,5 +1,5 @@
 import type { RefObject } from 'react'
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import {
   BOARD_SIZE,
   CELL_SIZE,
@@ -10,13 +10,14 @@ import {
 import type { Direction } from '../utils'
 import { clearBoard, moveSnake } from '../utils'
 import { useHandleKeys } from './use-handle-keys'
+import { ScoreContext } from '../context/score'
 
-const foodInitialPosition = {
+const foodInitialPosition = () => ({
   x: Math.floor((Math.random() * BOARD_SIZE) / CELL_SIZE) * CELL_SIZE,
   y: Math.floor(
     Math.floor((Math.random() * BOARD_SIZE) / CELL_SIZE) * CELL_SIZE,
   ),
-}
+})
 
 export const useGameEngine = (
   canvasRef: RefObject<HTMLCanvasElement | null>,
@@ -24,7 +25,17 @@ export const useGameEngine = (
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
   const [direction, setDirection] = useState<Direction>('RIGHT')
   const [snakePosition, setSnakePosition] = useState(SNAKE_INITIAL_POSITION)
+  const [foodPosition, setFoodPosition] = useState(foodInitialPosition())
+  const { setScore } = use(ScoreContext)
+
   useHandleKeys(moveSnake, snakePosition, setSnakePosition, setDirection)
+
+  useEffect(() => {
+    if (JSON.stringify(snakePosition[0]) === JSON.stringify(foodPosition)) {
+      setFoodPosition(() => foodInitialPosition())
+      setScore((prevState: number) => prevState + 3)
+    }
+  }, [snakePosition, foodPosition, setScore])
 
   useEffect(() => {
     if (canvasRef.current === null) {
@@ -44,12 +55,7 @@ export const useGameEngine = (
 
       // Render food
       context.fillStyle = FOOD_COLOR
-      context?.fillRect(
-        foodInitialPosition.x,
-        foodInitialPosition.y,
-        CELL_SIZE,
-        CELL_SIZE,
-      )
+      context?.fillRect(foodPosition.x, foodPosition.y, CELL_SIZE, CELL_SIZE)
     }
 
     const render = () => {
@@ -64,7 +70,7 @@ export const useGameEngine = (
     return () => {
       window.cancelAnimationFrame(animationFrameId)
     }
-  }, [canvasRef, context, snakePosition, direction, setDirection])
+  }, [canvasRef, context, snakePosition, direction, setDirection, foodPosition])
 
   return {}
 }

@@ -1,4 +1,5 @@
-import { Score, ScoreProvider } from './components/Score'
+import { Score } from './components/Score'
+import { ScoreProvider } from './components/Board/context/score'
 import { Board } from './components/Board'
 
 export const App = () => {

@@ -1,5 +1,5 @@
 import { use } from 'react'
-import { ScoreContext } from './context/score'
+import { ScoreContext } from '../Board/context/score'
 
 export const Score = () => {
   const { score } = use(ScoreContext)
