@@ -6,18 +6,12 @@ import {
   SNAKE_INITIAL_POSITION,
   SNAKE_COLOR,
   FOOD_COLOR,
+  MAX_SCORE,
 } from '../const'
 import type { Direction } from '../utils'
-import { clearBoard, moveSnake } from '../utils'
+import { clearBoard, moveSnake, createFood } from '../utils'
 import { useHandleKeys } from './use-handle-keys'
 import { ScoreContext } from '../context/score'
-
-const foodInitialPosition = () => ({
-  x: Math.floor((Math.random() * BOARD_SIZE) / CELL_SIZE) * CELL_SIZE,
-  y: Math.floor(
-    Math.floor((Math.random() * BOARD_SIZE) / CELL_SIZE) * CELL_SIZE,
-  ),
-})
 
 export const useGameEngine = (
   canvasRef: RefObject<HTMLCanvasElement | null>,
@@ -25,14 +19,26 @@ export const useGameEngine = (
   const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
   const [direction, setDirection] = useState<Direction>('RIGHT')
   const [snakePosition, setSnakePosition] = useState(SNAKE_INITIAL_POSITION)
-  const [foodPosition, setFoodPosition] = useState(foodInitialPosition())
-  const { setScore } = use(ScoreContext)
+  const [foodPosition, setFoodPosition] = useState(createFood())
+  const { score, setScore } = use(ScoreContext)
 
   useHandleKeys(moveSnake, snakePosition, setSnakePosition, setDirection)
 
   useEffect(() => {
+    if (score >= MAX_SCORE) {
+      alert('Game Over')
+    }
+    if (snakePosition[0].x < 0 || snakePosition[0].x >= BOARD_SIZE) {
+      alert('Game Over')
+    }
+    if (snakePosition[0].y < 0 || snakePosition[0].y >= BOARD_SIZE) {
+      alert('Game Over')
+    }
+  }, [score, snakePosition])
+
+  useEffect(() => {
     if (JSON.stringify(snakePosition[0]) === JSON.stringify(foodPosition)) {
-      setFoodPosition(() => foodInitialPosition())
+      setFoodPosition(() => createFood())
       setScore((prevState: number) => prevState + 3)
     }
   }, [snakePosition, foodPosition, setScore])

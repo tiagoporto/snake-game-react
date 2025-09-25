@@ -1,6 +1,8 @@
 export const BOARD_SIZE = 400
 export const CELL_SIZE = BOARD_SIZE / 20
 
+export const MAX_SCORE = 30
+
 export const FOOD_COLOR = 'pink'
 
 export const SNAKE_COLOR = 'green'

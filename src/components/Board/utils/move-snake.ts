@@ -13,7 +13,7 @@ export const moveSnake = (
 
   switch (direction) {
     case 'UP':
-      if (currentPosition[0].y === 0) {
+      if (currentPosition[0].y === -CELL_SIZE) {
         return
       }
 
@@ -24,7 +24,7 @@ export const moveSnake = (
 
       break
     case 'DOWN':
-      if (currentPosition[0].y === BOARD_SIZE - CELL_SIZE) {
+      if (currentPosition[0].y === BOARD_SIZE) {
         return
       }
 
@@ -35,7 +35,7 @@ export const moveSnake = (
 
       break
     case 'LEFT':
-      if (currentPosition[0].x === 0) {
+      if (currentPosition[0].x === -CELL_SIZE) {
         return
       }
 
@@ -46,7 +46,7 @@ export const moveSnake = (
 
       break
     case 'RIGHT':
-      if (currentPosition[0].x === BOARD_SIZE - CELL_SIZE) {
+      if (currentPosition[0].x === BOARD_SIZE) {
         return
       }
 
