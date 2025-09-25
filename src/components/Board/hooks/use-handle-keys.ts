@@ -3,30 +3,39 @@ import type { Dispatch, SetStateAction } from 'react'
 import { useCallback, useEffect } from 'react'
 
 export const useHandleKeys = (
+  currentDirection: Direction,
   setDirection: Dispatch<SetStateAction<Direction>>,
 ) => {
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       switch (event.key) {
         case 'ArrowUp':
-          setDirection('UP')
+          if (currentDirection !== 'DOWN') {
+            setDirection('UP')
+          }
 
           break
         case 'ArrowDown':
-          setDirection('DOWN')
+          if (currentDirection !== 'UP') {
+            setDirection('DOWN')
+          }
 
           break
         case 'ArrowRight':
-          setDirection('RIGHT')
+          if (currentDirection !== 'LEFT') {
+            setDirection('RIGHT')
+          }
           break
         case 'ArrowLeft':
-          setDirection('LEFT')
+          if (currentDirection !== 'RIGHT') {
+            setDirection('LEFT')
+          }
           break
         default:
           break
       }
     },
-    [setDirection],
+    [currentDirection, setDirection],
   )
 
   useEffect(() => {

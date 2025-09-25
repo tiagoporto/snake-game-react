@@ -24,7 +24,7 @@ export const useGameEngine = (
   const [shouldGrowth, setShouldGrowth] = useState(false)
   const { score, setScore } = use(ScoreContext)
 
-  useHandleKeys(setDirection)
+  useHandleKeys(direction, setDirection)
 
   const resetGame = useCallback(() => {
     setScore(0)
