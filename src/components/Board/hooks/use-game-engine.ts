@@ -1,15 +1,16 @@
 import type { RefObject } from 'react'
-import { use, useEffect, useState } from 'react'
+import { use, useCallback, useEffect, useState } from 'react'
 import {
   BOARD_SIZE,
-  CELL_SIZE,
   SNAKE_INITIAL_POSITION,
   SNAKE_COLOR,
   FOOD_COLOR,
   MAX_SCORE,
+  FRAMES_TO_RERENDER,
+  POINTS_PER_FOOD,
 } from '../const'
 import type { Direction } from '../utils'
-import { clearBoard, moveSnake, createFood } from '../utils'
+import { clearBoard, moveSnake, createFood, renderElements } from '../utils'
 import { useHandleKeys } from './use-handle-keys'
 import { ScoreContext } from '../context/score'
 
@@ -24,25 +25,35 @@ export const useGameEngine = (
 
   useHandleKeys(moveSnake, snakePosition, setSnakePosition, setDirection)
 
-  useEffect(() => {
-    if (score >= MAX_SCORE) {
-      alert('Game Over')
-    }
-    if (snakePosition[0].x < 0 || snakePosition[0].x >= BOARD_SIZE) {
-      alert('Game Over')
-    }
-    if (snakePosition[0].y < 0 || snakePosition[0].y >= BOARD_SIZE) {
-      alert('Game Over')
-    }
-  }, [score, snakePosition])
+  const resetGame = useCallback(() => {
+    setScore(0)
+    setSnakePosition(SNAKE_INITIAL_POSITION)
+    setDirection('RIGHT')
+    alert('Game Over')
+  }, [setScore, setSnakePosition, setDirection])
 
+  // handle game over
+  useEffect(() => {
+    if (
+      score >= MAX_SCORE ||
+      snakePosition[0].x < 0 ||
+      snakePosition[0].x >= BOARD_SIZE ||
+      snakePosition[0].y < 0 ||
+      snakePosition[0].y >= BOARD_SIZE
+    ) {
+      resetGame()
+    }
+  }, [score, snakePosition, resetGame])
+
+  // Handle food
   useEffect(() => {
     if (JSON.stringify(snakePosition[0]) === JSON.stringify(foodPosition)) {
       setFoodPosition(() => createFood())
-      setScore((prevState: number) => prevState + 3)
+      setScore((prevState: number) => prevState + POINTS_PER_FOOD)
     }
   }, [snakePosition, foodPosition, setScore])
 
+  // Render process
   useEffect(() => {
     if (canvasRef.current === null) {
       throw new Error('no canvas in screen')
@@ -52,20 +63,12 @@ export const useGameEngine = (
 
     if (context) {
       clearBoard(context)
-
-      // Render initial snake position
-      snakePosition.forEach((position) => {
-        context.fillStyle = SNAKE_COLOR
-        context?.fillRect(position.x, position.y, CELL_SIZE, CELL_SIZE)
-      })
-
-      // Render food
-      context.fillStyle = FOOD_COLOR
-      context?.fillRect(foodPosition.x, foodPosition.y, CELL_SIZE, CELL_SIZE)
+      renderElements(context, snakePosition, SNAKE_COLOR)
+      renderElements(context, [foodPosition], FOOD_COLOR)
     }
 
     const render = () => {
-      if (context && animationFrameId % 10 === 0) {
+      if (context && animationFrameId % FRAMES_TO_RERENDER === 0) {
         moveSnake(direction, snakePosition, setSnakePosition, setDirection)
       }
       animationFrameId = window.requestAnimationFrame(render)
@@ -77,6 +80,4 @@ export const useGameEngine = (
       window.cancelAnimationFrame(animationFrameId)
     }
   }, [canvasRef, context, snakePosition, direction, setDirection, foodPosition])
-
-  return {}
 }
