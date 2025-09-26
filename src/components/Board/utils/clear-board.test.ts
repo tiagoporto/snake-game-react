@@ -13,6 +13,6 @@ describe('clearBoard', () => {
 
     clearBoard(contextMock)
 
-    expect(clearRectMock.mock.calls[0]).toEqual([0, 0, 400, 400])
+    expect(clearRectMock.mock.calls[0]).toStrictEqual([0, 0, 400, 400])
   })
 })
