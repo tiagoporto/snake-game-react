@@ -11,6 +11,7 @@
 <p align="center">
 <a href="https://tiagoporto.github.io/snake-game-react/" target="_blank">https://tiagoporto.github.io/snake-game-react</a>
 </p>
+
 ## ✅ Status
 
 [![Checks GA Workflow Status](https://img.shields.io/github/actions/workflow/status/tiagoporto/snake-game-react/checks.yml?branch=main&label=checks&logo=githubactions&logoColor=white&style=flat-square)](https://github.com/tiagoporto/snake-game-react/actions/workflows/checks.yml?query=branch%3Amain)
