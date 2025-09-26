@@ -13,6 +13,8 @@
 ## ✅ Status
 
 [![Checks GA Workflow Status](https://img.shields.io/github/actions/workflow/status/tiagoporto/snake-game-react/checks.yml?branch=main&label=checks&logo=githubactions&logoColor=white&style=flat-square)](https://github.com/tiagoporto/snake-game-react/actions/workflows/checks.yml?query=branch%3Amain)
+[![Unit Tests Workflow Status](https://img.shields.io/github/actions/workflow/status/tiagoporto/snake-game-react/unit-tests.yml?label=unit%20tests&style=flat-square&branch=main)](https://github.com/tiagoporto/snake-game-react/actions/workflows/unit-tests.yml?query=branch%3Amain)
+[![Coverage Status](https://img.shields.io/coverallsCoverage/github/tiagoporto/snake-game-react.svg?logo=coveralls&style=flat-square)](https://coveralls.io/github/tiagoporto/snake-game-react)
 
 ## 🛠 Development
 

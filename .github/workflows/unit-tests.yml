@@ -1,0 +1,47 @@
+name: Unit Tests
+
+on:
+  workflow_call:
+  push:
+    branches: [main]
+  pull_request:
+    types: [synchronize, opened, reopened, ready_for_review, converted_to_draft]
+
+concurrency:
+  group: unit-tests_${{ github.workflow }}_${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  unit_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Run tests
+        if: github.event_name == 'workflow_dispatch'
+        run: pnpm test
+
+      - name: Run tests coverage
+        if: github.event_name != 'workflow_dispatch'
+        run: pnpm coverage
+
+      - name: Coveralls
+        if: github.event_name != 'workflow_dispatch'
+        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b

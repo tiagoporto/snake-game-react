@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
@@ -13,4 +13,16 @@ export default defineConfig({
       },
     }),
   ],
+  test: {
+    include: ['./src/**/*.test.{ts,tsx}'],
+    restoreMocks: true,
+    coverage: {
+      provider: 'v8',
+      reportsDirectory: 'coverage',
+      reporter: process.env.CI ? 'lcov' : 'html',
+      extension: ['.js', '.jsx', '.ts', '.tsx'],
+      exclude: [],
+      include: ['src/'],
+    },
+  },
 })
