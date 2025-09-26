@@ -31,6 +31,39 @@ describe('moveSnake', () => {
     ])
   })
 
+  it('move the snake up and growth', () => {
+    expect.hasAssertions()
+
+    const newPosition = moveSnake({
+      direction: 'UP',
+      currentPosition: [
+        { x: 20, y: 20 },
+        { x: 20, y: 20 },
+        { x: 20, y: 20 },
+      ],
+      shouldGrowth: true,
+    })
+
+    expect(newPosition).toStrictEqual([
+      {
+        x: 20,
+        y: 0,
+      },
+      {
+        x: 20,
+        y: 20,
+      },
+      {
+        x: 20,
+        y: 20,
+      },
+      {
+        x: 20,
+        y: 20,
+      },
+    ])
+  })
+
   it('only move the snake down', () => {
     expect.hasAssertions()
 
@@ -48,6 +81,39 @@ describe('moveSnake', () => {
       {
         x: 20,
         y: 40,
+      },
+      {
+        x: 20,
+        y: 20,
+      },
+      {
+        x: 20,
+        y: 20,
+      },
+    ])
+  })
+
+  it('move the snake down and growth', () => {
+    expect.hasAssertions()
+
+    const newPosition = moveSnake({
+      direction: 'DOWN',
+      currentPosition: [
+        { x: 20, y: 20 },
+        { x: 20, y: 20 },
+        { x: 20, y: 20 },
+      ],
+      shouldGrowth: true,
+    })
+
+    expect(newPosition).toStrictEqual([
+      {
+        x: 20,
+        y: 40,
+      },
+      {
+        x: 20,
+        y: 20,
       },
       {
         x: 20,
@@ -89,6 +155,39 @@ describe('moveSnake', () => {
     ])
   })
 
+  it('only move the snake right and growth', () => {
+    expect.hasAssertions()
+
+    const newPosition = moveSnake({
+      direction: 'RIGHT',
+      currentPosition: [
+        { x: 20, y: 20 },
+        { x: 20, y: 20 },
+        { x: 20, y: 20 },
+      ],
+      shouldGrowth: true,
+    })
+
+    expect(newPosition).toStrictEqual([
+      {
+        x: 40,
+        y: 20,
+      },
+      {
+        x: 20,
+        y: 20,
+      },
+      {
+        x: 20,
+        y: 20,
+      },
+      {
+        x: 20,
+        y: 20,
+      },
+    ])
+  })
+
   it('only move the snake left', () => {
     expect.hasAssertions()
 
@@ -105,6 +204,39 @@ describe('moveSnake', () => {
     expect(newPosition).toStrictEqual([
       {
         x: 0,
+        y: 20,
+      },
+      {
+        x: 20,
+        y: 20,
+      },
+      {
+        x: 20,
+        y: 20,
+      },
+    ])
+  })
+
+  it('only move the snake left and growth', () => {
+    expect.hasAssertions()
+
+    const newPosition = moveSnake({
+      direction: 'LEFT',
+      currentPosition: [
+        { x: 20, y: 20 },
+        { x: 20, y: 20 },
+        { x: 20, y: 20 },
+      ],
+      shouldGrowth: true,
+    })
+
+    expect(newPosition).toStrictEqual([
+      {
+        x: 0,
+        y: 20,
+      },
+      {
+        x: 20,
         y: 20,
       },
       {
