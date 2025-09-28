@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { expect, describe, it, vi } from 'vitest'
 import { App } from './App'
 
-describe('App', () => {
+describe('<App/>', () => {
   it('renders the App component', () => {
     vi.mock('./components/Board', () => ({
       Board: () => <div data-testid="board">Board Mock</div>,

@@ -5,10 +5,8 @@ export const Score = () => {
   const { score } = use(ScoreContext)
 
   return (
-    <div>
-      <h2>
-        Score: <span className="font-bold">{score}</span>
-      </h2>
-    </div>
+    <p data-testid="score">
+      Score: <span className="font-bold">{score}</span>
+    </p>
   )
 }
