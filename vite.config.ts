@@ -16,6 +16,8 @@ export default defineConfig({
   test: {
     include: ['./src/**/*.test.{ts,tsx}'],
     restoreMocks: true,
+    environment: 'jsdom',
+    setupFiles: './tests/setup.ts',
     coverage: {
       provider: 'v8',
       reportsDirectory: 'coverage',
