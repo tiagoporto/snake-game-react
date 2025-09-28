@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { codecovVitePlugin } from '@codecov/vite-plugin'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -11,6 +12,11 @@ export default defineConfig({
       babel: {
         plugins: [['babel-plugin-react-compiler']],
       },
+    }),
+    codecovVitePlugin({
+      enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+      bundleName: 'snake-game-react',
+      uploadToken: process.env.CODECOV_TOKEN,
     }),
   ],
   test: {

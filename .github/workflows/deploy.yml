@@ -43,6 +43,7 @@ jobs:
       - name: Build website
         env:
           VITE_GTAG_ID: ${{ vars.GTAG_ID }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: pnpm build
 
       - name: Upload artifact
