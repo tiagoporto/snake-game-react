@@ -18,6 +18,8 @@ export default defineConfig({
     restoreMocks: true,
     environment: 'jsdom',
     setupFiles: './tests/setup.ts',
+    reporters: process.env.CI ? 'junit' : 'default',
+    outputFile: 'test-report.junit.xml',
     coverage: {
       provider: 'v8',
       reportsDirectory: 'coverage',
