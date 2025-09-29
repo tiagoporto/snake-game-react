@@ -2,8 +2,8 @@ import type { PropsWithChildren } from 'react'
 import { use, useEffect } from 'react'
 import { render, screen } from '@testing-library/react'
 import { expect, describe, it } from 'vitest'
-import { Score } from './Score'
 import { ScoreContext, ScoreProvider } from '../Board/context/score'
+import { Score } from './'
 
 const TestProvider = ({ children }: PropsWithChildren<object>) => {
   const { setScore } = use(ScoreContext)

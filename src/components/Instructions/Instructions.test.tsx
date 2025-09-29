@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { expect, describe, it } from 'vitest'
-import { Instructions } from './Instructions'
+import { Instructions } from './'
 
 describe('<Instructions/>', () => {
   it('renders the Instructions component', () => {

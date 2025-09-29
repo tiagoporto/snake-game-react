@@ -20,6 +20,7 @@ export const Board = () => {
     <>
       <canvas
         className="border border-black"
+        data-testid="board"
         ref={canvasRef}
         width={BOARD_SIZE}
         height={BOARD_SIZE}
